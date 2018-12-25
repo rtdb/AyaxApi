@@ -25,6 +25,6 @@ namespace TodoApi.Repository
 		/// <param name="pageNum">Номер страницы данных. Если не задан - возвращаются все объекты.</param>
 		/// <param name="pageSize">Количество объектов на странице данных. Если не задано - возвращаются все объекты.</param>
 		/// <returns>Коллекция объектов в выделенном потоке.</returns>
-		Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate, int? pageNum = 0, int? pageSize = 0) where T : class;
+		Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate, int? pageNum, int? pageSize) where T : class;
 	}
 }

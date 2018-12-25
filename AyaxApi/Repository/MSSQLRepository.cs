@@ -12,7 +12,8 @@ namespace TodoApi.Repository
 	{
 		private readonly EFContext _context;		
 
-		private DbSet<T> GetCollectionHelper<T>() where T : class
+		// Возвращает коллекцию из контекста соотвествующую типу модели.
+		private DbSet<T> SeletCollection<T>() where T : class
 		{
 			var type = typeof(T);
 			if (Equals(type, typeof(Division)))
@@ -53,7 +54,7 @@ namespace TodoApi.Repository
 		/// <returns>Запрошенный объект в выделенном потоке.</returns>
 		public Task<T> GetObjectAsync<T>(Expression<Func<T,bool>> predikate) where T : class
 		{
-			return GetCollectionHelper<T>()
+			return SeletCollection<T>()
 						.FirstOrDefaultAsync(predikate as Expression<Func<T, bool>>) as Task<T>;
 		}
 
@@ -66,19 +67,16 @@ namespace TodoApi.Repository
 		/// <returns>Коллекция объектов в выделенном потоке.</returns>
 		public Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate, int? pageNum, int? pageSize) where T : class
 		{
-			IQueryable<T> objects = null;
-
-			try
-			{
-				objects = GetCollectionHelper<T>().Where(predikate);
-			}
-			catch (Exception)
-			{
-			}
+			IQueryable<T> objects = SeletCollection<T>().Where(predikate);
 
 			if (pageNum == null || pageSize == null)
 			{
 				return objects.ToListAsync();
+			}
+
+			if(pageNum < 0 || pageSize < 1)
+			{
+				throw new Exception("Invalid paging params.");
 			}
 
 			return objects

@@ -15,7 +15,6 @@ namespace TodoApi.Controllers
 	{
 		private readonly IRepository _repository;
 
-
 		public TodoController(IRepository repository)
 		{
 			_repository = repository;
@@ -27,7 +26,7 @@ namespace TodoApi.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор сущности "Подразделение".</param>
 		/// <returns>Экземпляр сущности "Подразделение". </returns>
-		[HttpGet("division={id}")]
+		[HttpGet("division/id={id}")]
 		public async Task<ActionResult<Division>> GetDivision(long id)
 		{
 			Division division = null;
@@ -35,8 +34,9 @@ namespace TodoApi.Controllers
 			{
 				division = await _repository.GetObjectAsync<Division>(d => d.Id == id);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				return BadRequest(ex);
 			}
 
 			if (Equals(division, null))
@@ -54,7 +54,8 @@ namespace TodoApi.Controllers
 		/// <param name="pageNum">Номер страницы данных начиная с "0". Если не задан - возвращаются все объекты.</param>
 		/// <param name="pageSize">Количество объектов на странице данных. Если не задано - возвращаются все объекты.</param>
 		/// <returns>Коллекция объектов соотвествующая шаблону.</returns>
-		[HttpGet("divisionsbyname={patternName}")]		
+		//[HttpGet("divisions={patternName};{pageNum};{pageSize}")]		
+		[HttpGet("divisions/name={patternName};page={pageNum};size={pageSize}")]
 		public async Task<ActionResult<IEnumerable<Division>>> GetDivisionsByName(string patternName, int? pageNum, int? pageSize)
 		{
 			List<Division> divisions = null;
@@ -63,11 +64,12 @@ namespace TodoApi.Controllers
 				divisions = await _repository.GetObjectsAsync<Division>(d => 
 													EF.Functions.Like(d.Name, string.Format("%{0}%", patternName)), pageNum, pageSize);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				return BadRequest(ex);
 			}
 
-			if (Equals(divisions, null))
+			if (divisions.Count == 0)
 			{
 				return NotFound();
 			}
@@ -76,12 +78,11 @@ namespace TodoApi.Controllers
 		}
 
 		/// <summary>
-		/// Обрабатывает запрос GET. Пр.: "/realtor:1"
 		/// Возвращает экземпляр сущности "Риэлтор".
 		/// </summary>
 		/// <param name="id">Идентификатор сущности "Риэлтор".</param>
 		/// <returns>Экземпляр сущности "Риэлтор". </returns>
-		[HttpGet("realtor={id}")]
+		[HttpGet("realtor/id={id}")]
 		public async Task<ActionResult<Realtor>> GetRealtor(long id)
 		{
 			Realtor realtor = null;
@@ -89,8 +90,9 @@ namespace TodoApi.Controllers
 			{
 				realtor = await _repository.GetObjectAsync<Realtor>(r => r.Id == id);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				return BadRequest(ex);
 			}
 
 			if (Equals(realtor, null))
@@ -106,20 +108,20 @@ namespace TodoApi.Controllers
 		/// </summary>
 		/// <param name="divId"></param>
 		/// <returns></returns>
-		[HttpGet("realtorsdiv={divId}")]
-		public async Task<ActionResult<IEnumerable<Realtor>>> GetRealtorsByDivision(long divId)
+		[HttpGet("realtors_div/divid={divId}")]
+		public async Task<ActionResult<IEnumerable<Realtor>>> GetRealtorsByDivision(long divId, int? pageNum, int? pageSize)
 		{
 			List<Realtor> realtors = null;
 			try
 			{
-				realtors = await _repository.GetObjectsAsync<Realtor>(r => r.DivisionId == divId);
+				realtors = await _repository.GetObjectsAsync<Realtor>(r => r.DivisionId == divId, pageNum, pageSize);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				return BadRequest(ex);
 			}
 
-
-			if (Equals(realtors, null))
+			if (realtors.Count == 0)
 			{
 				return NotFound();
 			}
@@ -127,20 +129,22 @@ namespace TodoApi.Controllers
 			return realtors;
 		}
 
-		[HttpGet("realtorsbyname={pattern}")]
-		public async Task<ActionResult<IEnumerable<Realtor>>> GetRealtorsByName(string pattern)
+		[HttpGet("realtors_name/name={patternName};page={pageNum};size={pageSize}")]
+		public async Task<ActionResult<IEnumerable<Realtor>>> GetRealtorsByName(string patternName, int? pageNum, int? pageSize)
 		{
 			List<Realtor> realtors = null;
 			try
 			{				
-				realtors = await _repository.GetObjectsAsync<Realtor>(d => EF.Functions.Like(d.Lastname, pattern));
+				realtors = await _repository.GetObjectsAsync<Realtor>(r =>
+												EF.Functions.Like(r.Lastname, string.Format("%{0}%", patternName)), pageNum, pageSize);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				return BadRequest(ex);
 			}
 
 
-			if (Equals(realtors, null))
+			if (realtors.Count == 0)
 			{
 				return NotFound();
 			}
