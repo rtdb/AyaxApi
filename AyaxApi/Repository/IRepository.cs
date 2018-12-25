@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using TodoApi.Models;
 
 namespace TodoApi.Repository
 {
@@ -12,7 +11,7 @@ namespace TodoApi.Repository
 	public interface IRepository
 	{
 		/// <summary>
-		/// Возвращает объект из репозитория соотвествующий фильтру.
+		/// Возвращает объект соотвествующий фильтру.
 		/// </summary>
 		/// <typeparam name="T">Тип объектов.</typeparam>
 		/// <param name="predikate">Фильтр объектов.</param>
@@ -20,11 +19,12 @@ namespace TodoApi.Repository
 		Task<T> GetObjectAsync<T>(Expression<Func<T, bool>> predikate) where T : class;
 
 		/// <summary>
-		/// Возвращает объекты из репозитория соотвествующие фильтру.
+		/// Возвращает объекты модели соотвествующие фильтру.
 		/// </summary>
-		/// <typeparam name="T">Тип объектов.</typeparam>
 		/// <param name="predikate">Фильтр объектов.</param>
-		/// <returns>Запрошенные объекты в выделенном потоке.</returns>
-		Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate) where T : class;
+		/// <param name="pageNum">Номер страницы данных. Если не задан - возвращаются все объекты.</param>
+		/// <param name="pageSize">Количество объектов на странице данных. Если не задано - возвращаются все объекты.</param>
+		/// <returns>Коллекция объектов в выделенном потоке.</returns>
+		Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate, int? pageNum = 0, int? pageSize = 0) where T : class;
 	}
 }

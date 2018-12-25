@@ -58,23 +58,33 @@ namespace TodoApi.Repository
 		}
 
 		/// <summary>
-		/// Возвращает объекты из репозитория соотвествующие фильтру.
+		/// Возвращает объекты модели соотвествующие фильтру.
 		/// </summary>
-		/// <typeparam name="T">Тип объектов.</typeparam>
 		/// <param name="predikate">Фильтр объектов.</param>
-		/// <returns>Запрошенные объекты в выделенном потоке.</returns>
-		public Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate) where T : class
+		/// <param name="pageNum">Номер страницы данных начиная с "0". Если не задан - возвращаются все объекты.</param>
+		/// <param name="pageSize">Количество объектов на странице данных. Если не задано - возвращаются все объекты.</param>
+		/// <returns>Коллекция объектов в выделенном потоке.</returns>
+		public Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate, int? pageNum, int? pageSize) where T : class
 		{
-			return GetCollectionHelper<T>()
-						.Where(predikate)
-						.ToListAsync();
-		}
+			IQueryable<T> objects = null;
 
-		//public Task<List<Realtor>> GetRealtorsAsync(string pattern)
-		//{
-		//	return GetCollectionHelper<Realtor>()
-		//				.Where(d => EF.Functions.Like(d.Lastname, pattern))
-		//				.ToListAsync();
-		//}
+			try
+			{
+				objects = GetCollectionHelper<T>().Where(predikate);
+			}
+			catch (Exception)
+			{
+			}
+
+			if (pageNum == null || pageSize == null)
+			{
+				return objects.ToListAsync();
+			}
+
+			return objects
+				.Skip(pageNum.Value * pageSize.Value)
+				.Take(pageSize.Value)
+				.ToListAsync();
+		}
 	}
 }

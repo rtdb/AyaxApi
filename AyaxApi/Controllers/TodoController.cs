@@ -47,13 +47,21 @@ namespace TodoApi.Controllers
 			return division;
 		}
 
-		[HttpGet("divisionsbyname={pattern}")]
-		public async Task<ActionResult<IEnumerable<Division>>> GetDivisionsByName(string pattern)
+		/// <summary>
+		/// Возвращает подразделения по шаблону имени (like).
+		/// </summary>
+		/// <param name="patternName">Шаблон имени подразделения.</param>
+		/// <param name="pageNum">Номер страницы данных начиная с "0". Если не задан - возвращаются все объекты.</param>
+		/// <param name="pageSize">Количество объектов на странице данных. Если не задано - возвращаются все объекты.</param>
+		/// <returns>Коллекция объектов соотвествующая шаблону.</returns>
+		[HttpGet("divisionsbyname={patternName}")]		
+		public async Task<ActionResult<IEnumerable<Division>>> GetDivisionsByName(string patternName, int? pageNum, int? pageSize)
 		{
 			List<Division> divisions = null;
 			try
 			{
-				divisions = await _repository.GetObjectsAsync<Division>(d => EF.Functions.Like(d.Name, pattern));
+				divisions = await _repository.GetObjectsAsync<Division>(d => 
+													EF.Functions.Like(d.Name, string.Format("%{0}%", patternName)), pageNum, pageSize);
 			}
 			catch (Exception)
 			{
