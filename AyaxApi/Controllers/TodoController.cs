@@ -21,7 +21,6 @@ namespace AyaxApi.Controllers
 		}
 
 		/// <summary>
-		/// Обрабатывает запрос GET. Пр.: "/division=1"
 		/// Возвращает экземпляр сущности "Подразделение".
 		/// </summary>
 		/// <param name="id">Идентификатор сущности "Подразделение".</param>
