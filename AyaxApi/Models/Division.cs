@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TodoApi.Models
+namespace AyaxApi.Models
 {
 	/// <summary>
 	/// Модель сущности "Подразделение".
 	/// </summary>
-	public class Division
+	public class Division : ModelBase
 	{
-		/// <summary>
-		/// Идентификатор сущности в БД (primary key).
-		/// </summary>
-		public long Id { get; set; }
+		///// <summary>
+		///// Идентификатор сущности в БД (primary key).
+		///// </summary>
+		//public long Id { get; set; }
 
 		/// <summary>
 		/// Наименование подразделения.

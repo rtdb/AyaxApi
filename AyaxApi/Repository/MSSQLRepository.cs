@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using TodoApi.Models;
+using AyaxApi.Models;
 
-namespace TodoApi.Repository
+namespace AyaxApi.Repository
 {
 	public class MSSQLRepository : IRepository, IDisposable
 	{
@@ -83,6 +83,35 @@ namespace TodoApi.Repository
 				.Skip(pageNum.Value * pageSize.Value)
 				.Take(pageSize.Value)
 				.ToListAsync();
+		}
+
+		/// <summary>
+		/// Новый объект сохраняет в репозитории, существующий - обновляет.
+		/// </summary>
+		/// <typeparam name="T">Тип объекта.</typeparam>
+		/// <param name="newObject">Новый или существующий объект модели.</param>
+		/// <returns>Поток сохранения оъекта.</returns>
+		public Task<int> SaveObjectAsync<T>(T newObject) where T : ModelBase
+		{
+			DbSet<T> coll = SeletCollection<T>();
+
+			if (newObject.Id == 0)
+			{
+				coll.Add(newObject);
+			}
+			else
+			{
+				if (coll.Contains(newObject))
+				{
+					_context.Entry(newObject).State = EntityState.Modified;
+				}
+				else
+				{
+					throw new Exception(string.Format("Object with Id={0} not exist.", newObject.Id));
+				}
+			}
+
+			return _context.SaveChangesAsync();			 
 		}
 	}
 }

@@ -13,8 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TodoApi.Models;
-using TodoApi.Repository;
+using AyaxApi.Models;
+using AyaxApi.Repository;
 
 namespace TodoApi
 {

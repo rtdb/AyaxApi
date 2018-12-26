@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace TodoApi.Models
+namespace AyaxApi.Models
 {
 	/// <summary>
 	/// Параметры маппинга в БД модели сущности "Риэлтор".

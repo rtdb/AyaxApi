@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using TodoApi.Models;
-using TodoApi.Repository;
+using AyaxApi.Models;
+using AyaxApi.Repository;
 
-namespace TodoApi.Controllers
+namespace AyaxApi.Controllers
 {
 	[Route("[controller]")]
 	[ApiController]
@@ -36,7 +36,7 @@ namespace TodoApi.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex);
+				return BadRequest(ex);				
 			}
 
 			if (Equals(division, null))
@@ -67,6 +67,7 @@ namespace TodoApi.Controllers
 			catch (Exception ex)
 			{
 				return BadRequest(ex);
+				//return StatusCode(500, ex);
 			}
 
 			if (divisions.Count == 0)
@@ -75,6 +76,27 @@ namespace TodoApi.Controllers
 			}
 
 			return divisions;
+		}
+
+		/// <summary>
+		/// Сохраняет экземпляр сущности "Подразделение" в репозитории. 
+		/// Новые данные будут добавлены, существующие обновлены.
+		/// </summary>
+		/// <param name="div">Новый или существующий объект модели.</param>
+		/// <returns>Поток сохранения оъекта.</returns>
+		[HttpPost("save_division")]
+		public async Task<ActionResult<Division>> SaveDivision (Division div)
+		{
+			try
+			{
+				await _repository.SaveObjectAsync<Division>(div);
+			}
+			catch(Exception ex)
+			{
+				return StatusCode(500, ex);
+			}
+
+			return CreatedAtAction("GetDivision", new { div.Id}, div);
 		}
 
 		/// <summary>
@@ -150,6 +172,27 @@ namespace TodoApi.Controllers
 			}
 
 			return realtors;
+		}
+
+		/// <summary>
+		/// Сохраняет экземпляр сущности "Риэлтор" в репозитории. 
+		/// Новые данные будут добавлены, существующие обновлены.
+		/// </summary>
+		/// <param name="realtor">Новый или существующий объект модели.</param>
+		/// <returns>Поток сохранения оъекта.</returns>
+		[HttpPost("save_realtor")]
+		public async Task<ActionResult<Realtor>> SaveRealtor(Realtor realtor)
+		{
+			try
+			{
+				await _repository.SaveObjectAsync<Realtor>(realtor);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex);
+			}
+
+			return CreatedAtAction("GetRealtor", new { realtor.Id }, realtor);
 		}
 	}
 }

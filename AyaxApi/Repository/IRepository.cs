@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace TodoApi.Repository
+using AyaxApi.Models;
+
+namespace AyaxApi.Repository
 {
 	/// <summary>
 	/// Интерфейс репозитория.
@@ -26,5 +28,13 @@ namespace TodoApi.Repository
 		/// <param name="pageSize">Количество объектов на странице данных. Если не задано - возвращаются все объекты.</param>
 		/// <returns>Коллекция объектов в выделенном потоке.</returns>
 		Task<List<T>> GetObjectsAsync<T>(Expression<Func<T, bool>> predikate, int? pageNum, int? pageSize) where T : class;
+
+		/// <summary>
+		/// Новый объект сохраняет в репозитории, существующий - обновляет.
+		/// </summary>
+		/// <typeparam name="T">Тип объекта.</typeparam>
+		/// <param name="newObject">Новый или существующий объект модели.</param>
+		/// <returns>Поток сохранения оъекта.</returns>
+		Task<int> SaveObjectAsync<T>(T newObject) where T : ModelBase;
 	}
 }

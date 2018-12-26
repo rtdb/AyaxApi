@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace TodoApi.Models
+namespace AyaxApi.Models
 {
 	/// <summary>
 	/// Модель сущности "Риэлтор".
 	/// </summary>
-	public class Realtor
+	public class Realtor : ModelBase
 	{
-		/// <summary>
-		/// Идентификатор сущности в БД (primary key).
-		/// </summary>
-		public long Id { get; set; }
+		///// <summary>
+		///// Идентификатор сущности в БД (primary key).
+		///// </summary>
+		//public long Id { get; set; }
 
 		/// <summary>
 		/// Имя.

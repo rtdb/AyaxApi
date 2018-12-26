@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-using TodoApi.Models;
+using AyaxApi.Models;
 
-namespace TodoApi.Repository
+namespace AyaxApi.Repository
 {
 	/// <summary>
 	/// Контекст моделей на Microsoft Entity Framework Core.
