@@ -36,5 +36,13 @@ namespace AyaxApi.Repository
 		/// <param name="newObject">Новый или существующий объект модели.</param>
 		/// <returns>Поток сохранения оъекта.</returns>
 		Task<int> SaveObjectAsync<T>(T newObject) where T : ModelBase;
+
+		/// <summary>
+		/// Удаляет объект из репозитория.
+		/// </summary>
+		/// <typeparam name="T">Тип объекта.</typeparam>
+		/// <param name="id">Уникальный идентификатор объекта.</param>
+		/// <returns>Поток удаления объекта.</returns>
+		Task<T> DeleteObjectAsync<T>(long id) where T : ModelBase;
 	}
 }

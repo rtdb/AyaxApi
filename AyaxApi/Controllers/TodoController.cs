@@ -100,6 +100,33 @@ namespace AyaxApi.Controllers
 		}
 
 		/// <summary>
+		/// Удаляет объект модели "Подразделение" из репозитория.
+		/// </summary>
+		/// <param name="id">Идентификатор удаляемого экземпляра сущности "Подразделение".</param>
+		/// <returns>Удалённая из репозитория экземпляр.</returns>
+		[HttpDelete("del_division/id={id}")]
+		public async Task<ActionResult<Division>> DeleteDivision(long id)
+		{
+			Division delObject = null;
+
+			try
+			{
+				delObject = await _repository.DeleteObjectAsync<Division>(id);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex);
+			}
+
+			if (delObject == null)
+			{
+				return NotFound();
+			}
+
+			return delObject;
+		}
+
+		/// <summary>
 		/// Возвращает экземпляр сущности "Риэлтор".
 		/// </summary>
 		/// <param name="id">Идентификатор сущности "Риэлтор".</param>
@@ -193,6 +220,33 @@ namespace AyaxApi.Controllers
 			}
 
 			return CreatedAtAction("GetRealtor", new { realtor.Id }, realtor);
+		}
+
+		/// <summary>
+		/// Удаляет объект модели "Риэлтор" из репозитория.
+		/// </summary>
+		/// <param name="id">Идентификатор удаляемого экземпляра сущности "Риэлтор".</param>
+		/// <returns>Удалённая из репозитория экземпляр.</returns>
+		[HttpDelete("del_realtor/id={id}")]
+		public async Task<ActionResult<Realtor>> DeleteRealtor(long id)
+		{
+			Realtor delObject = null;
+
+			try
+			{
+				delObject = await _repository.DeleteObjectAsync<Realtor>(id);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex);
+			}
+
+			if (delObject == null)
+			{
+				return NotFound();
+			}
+
+			return delObject;
 		}
 	}
 }

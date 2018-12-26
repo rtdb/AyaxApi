@@ -8,7 +8,7 @@ using AyaxApi.Models;
 
 namespace AyaxApi.Repository
 {
-	public class MSSQLRepository : IRepository, IDisposable
+	public class EFRepository : IRepository, IDisposable
 	{
 		private readonly EFContext _context;		
 
@@ -28,7 +28,7 @@ namespace AyaxApi.Repository
 			throw new Exception();
 		}
 
-		public MSSQLRepository(string connString)
+		public EFRepository(string connString)
 		{
 			var optionsBuilder = new DbContextOptionsBuilder<EFContext>();
 			DbContextOptions<EFContext> options = optionsBuilder
@@ -112,6 +112,30 @@ namespace AyaxApi.Repository
 			}
 
 			return _context.SaveChangesAsync();			 
+		}
+
+		/// <summary>
+		/// Удаляет объект из репозитория.
+		/// </summary>
+		/// <typeparam name="T">Тип объекта.</typeparam>
+		/// <param name="id">Уникальный идентификатор объекта.</param>
+		/// <returns>Поток удаления объекта.</returns>
+		public async Task<T> DeleteObjectAsync<T>(long id) where T : ModelBase
+		{
+			DbSet<T> coll = SeletCollection<T>();
+			var obj = await _context.FindAsync<T>(id);
+
+			if (!Equals(obj, null))
+			{
+				_context.Remove(obj);
+			}
+			else
+			{
+				throw new Exception(string.Format("Object with Id={0} not exist.", id));
+			}
+
+			await _context.SaveChangesAsync();
+			return obj;
 		}
 	}
 }
