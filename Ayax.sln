@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AyaxApi", "AyaxApi\AyaxApi.csproj", "{BF2B5D91-CA66-4508-B2CA-DD49BEA366CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAyaxApi", "TestAyaxApi\TestAyaxApi.csproj", "{2EF5FC3D-AA18-4649-B9E6-F18B83C92EAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AyaxApi.Tests", "TestAyaxApi\AyaxApi.Tests.csproj", "{2EF5FC3D-AA18-4649-B9E6-F18B83C92EAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

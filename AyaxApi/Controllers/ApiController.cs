@@ -11,11 +11,11 @@ namespace AyaxApi.Controllers
 {
 	[Route("[controller]")]
 	[ApiController]
-	public class TodoController : ControllerBase
+	public class ApiController : ControllerBase
 	{
 		private readonly IRepository _repository;
 
-		public TodoController(IRepository repository)
+		public ApiController(IRepository repository)
 		{
 			_repository = repository;
 		}
