@@ -48,16 +48,6 @@ namespace TestAyaxApi
 		}
 
 		/// <summary>
-		/// Тест GetDivisionsByName(): "Получение подразделений по шаблону имени (like)."
-		/// </summary>
-		//[Fact]
-		//public async void GetDivisionsByNameCheckParamsTest()
-		//{
-		//	Assert.Throws(typeof(Exception), (var res = await _controller.GetDivisionsByName("H", 0, 0)).Value));
-
-		//}
-
-		/// <summary>
 		/// Тест SaveDivision(): "Сохранение экземпляра сущности "Подразделение" в репозитории."
 		/// </summary>
 		[Fact]
@@ -71,19 +61,6 @@ namespace TestAyaxApi
 
 			Assert.NotNull(actual);
 			Assert.Equal(expected.Id, actual.Id);
-		}
-
-		/// <summary>
-		/// Тест DeleteDivision(): "Удаление объекта модели "Подразделение" из репозитория."
-		/// </summary>
-		[Fact]
-		public async void DeleteDivisionTest()
-		{
-			Division expected = (await _controller.DeleteDivision(1)).Value;
-			Division actual = (await _controller.GetDivision(expected.Id)).Value;
-
-			Assert.NotNull(expected);
-			Assert.Null(actual);
 		}
 
 		/// <summary>
@@ -150,14 +127,27 @@ namespace TestAyaxApi
 		/// <summary>
 		/// Тест DeleteRealtor(): "Удаление объекта модели "Риэлтор" из репозитория."
 		/// </summary>
-		[Fact]
-		public async void DeleteRealtorTest()
-		{
-			Realtor expected = (await _controller.DeleteRealtor(1)).Value;
-			Realtor actual = (await _controller.GetRealtor(expected.Id)).Value;
+		//[Fact]
+		//public async void DeleteRealtorTest()
+		//{
+		//	Realtor expected = (await _controller.DeleteRealtor(1)).Value;
+		//	Realtor actual = (await _controller.GetRealtor(expected.Id)).Value;
 
-			Assert.NotNull(expected);
-			Assert.Null(actual);
-		}
+		//	Assert.NotNull(expected);
+		//	Assert.Null(actual);
+		//}
+
+		/// <summary>
+		/// Тест DeleteDivision(): "Удаление объекта модели "Подразделение" из репозитория."
+		/// </summary>
+		//[Fact]
+		//public async void DeleteDivisionTest()
+		//{
+		//	Division expected = (await _controller.DeleteDivision(1)).Value;
+		//	Division actual = (await _controller.GetDivision(expected.Id)).Value;
+
+		//	Assert.NotNull(expected);
+		//	Assert.Null(actual);
+		//}
 	}
 }
