@@ -92,10 +92,10 @@ namespace TestAyaxApi
 		[Fact]
 		public async void GetRealtorTest()
 		{
-			Realtor actual = (await _controller.GetRealtor(1)).Value;
+			Realtor actual = (await _controller.GetRealtor(2)).Value;
 
 			Assert.NotNull(actual);
-			Assert.Equal("Ivan", actual.Firstname);
+			Assert.Equal("Petr", actual.Firstname);
 		}
 
 		/// <summary>
