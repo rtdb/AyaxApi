@@ -8,11 +8,6 @@ namespace AyaxApi.Models
 	/// </summary>
 	public class Division : ModelBase
 	{
-		///// <summary>
-		///// Идентификатор сущности в БД (primary key).
-		///// </summary>
-		//public long Id { get; set; }
-
 		/// <summary>
 		/// Наименование подразделения.
 		/// </summary>
@@ -24,15 +19,8 @@ namespace AyaxApi.Models
 		public DateTime CreatedDateTime { get; set; }
 
 		/// <summary>
-		/// Риэлторы. (навигационное свойство)
+		/// Риэлторы.
 		/// </summary>
 		public virtual List<Realtor> Realtors { get; set; }
 	}
 }
-
-//Модель сущности "Подразделение":
-
-//Id - ключ(long)
-//Name - имя(string, MaxLength(200))
-//CreatedDateTime - дата регистрации(datetime, not null)
-//Список сущности "Подразделение" должен иметь возможность фильтрации по Id(eq), Name(like), а так же возможность пагинации

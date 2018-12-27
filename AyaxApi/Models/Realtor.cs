@@ -7,11 +7,6 @@ namespace AyaxApi.Models
 	/// </summary>
 	public class Realtor : ModelBase
 	{
-		///// <summary>
-		///// Идентификатор сущности в БД (primary key).
-		///// </summary>
-		//public long Id { get; set; }
-
 		/// <summary>
 		/// Имя.
 		/// </summary>
@@ -28,7 +23,7 @@ namespace AyaxApi.Models
 		public long? DivisionId { get; set; }
 
 		/// <summary>
-		/// Подразделение. (навигационное свойство)
+		/// Подразделение.
 		/// </summary>
 		public virtual Division Division { get; set; }
 
@@ -38,12 +33,3 @@ namespace AyaxApi.Models
 		public DateTime CreatedDateTime { get; set; }
 	}
 }
-
-//Модель сущности "Риэлтор":
-
-//Id - ключ(long)
-//Firstname - имя(string, MaxLength(200))
-//Lastname - фамилия(string, MaxLength(200))
-//Division - подразделение(связь с сущностью "Подразделение")
-//CreatedDateTime - дата создания(datetime, not null)
-//Список сущности "Риэлтор" должен иметь возможность фильтрации по Id(eq), LastName(like), Division(eq), а так же возможность пагинации
