@@ -1,11 +1,15 @@
 using System;
 using Xunit;
 
+using AyaxApi;
 using AyaxApi.Repository;
 using AyaxApi.Controllers;
 using AyaxApi.Models;
+
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace TestAyaxApi
 {
@@ -16,13 +20,32 @@ namespace TestAyaxApi
 	{
 		private ApiController _controller;
 
+		// Загружает строку подключения к БД из конфигурационного файла
+		private static string LoadFromSettings(string fileName)
+		{
+			var confBuilder = new ConfigurationBuilder();
+			confBuilder.SetBasePath(Directory.GetCurrentDirectory());
+			confBuilder.AddJsonFile(fileName);
+			var config = confBuilder.Build();
+			return config.GetConnectionString("DefaultConnection");
+		}
+
 		/// <summary>
 		/// Bыполняет инициализацию репозитория и EF-контекста для выполнения тестов.
 		/// </summary>
 		public ApiControllerTest()
 		{
-			_controller = new ApiController(
-				new EFRepository("Data Source = LAPTOP-R5MJF817; Database = Ayax; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"));
+			string connString = null;
+			try
+			{
+				connString = Utils.LoadFromSettings("AyaxApi.Tests.json");
+			}
+			catch (FileNotFoundException ex)
+			{
+				throw new AyaxApiException("Сбой при загрузке конфигурации.", ex);
+			}
+			
+			_controller = new ApiController( new EFRepository(connString) );
 		}
 
 		/// <summary>
@@ -127,27 +150,27 @@ namespace TestAyaxApi
 		/// <summary>
 		/// Тест DeleteRealtor(): "Удаление объекта модели "Риэлтор" из репозитория."
 		/// </summary>
-		//[Fact]
-		//public async void DeleteRealtorTest()
-		//{
-		//	Realtor expected = (await _controller.DeleteRealtor(1)).Value;
-		//	Realtor actual = (await _controller.GetRealtor(expected.Id)).Value;
+		[Fact]
+		public async void DeleteRealtorTest()
+		{
+			Realtor expected = (await _controller.DeleteRealtor(1)).Value;
+			Realtor actual = (await _controller.GetRealtor(expected.Id)).Value;
 
-		//	Assert.NotNull(expected);
-		//	Assert.Null(actual);
-		//}
+			Assert.NotNull(expected);
+			Assert.Null(actual);
+		}
 
 		/// <summary>
 		/// Тест DeleteDivision(): "Удаление объекта модели "Подразделение" из репозитория."
 		/// </summary>
-		//[Fact]
-		//public async void DeleteDivisionTest()
-		//{
-		//	Division expected = (await _controller.DeleteDivision(1)).Value;
-		//	Division actual = (await _controller.GetDivision(expected.Id)).Value;
+		[Fact]
+		public async void DeleteDivisionTest()
+		{
+			Division expected = (await _controller.DeleteDivision(1)).Value;
+			Division actual = (await _controller.GetDivision(expected.Id)).Value;
 
-		//	Assert.NotNull(expected);
-		//	Assert.Null(actual);
-		//}
+			Assert.NotNull(expected);
+			Assert.Null(actual);
+		}
 	}
 }

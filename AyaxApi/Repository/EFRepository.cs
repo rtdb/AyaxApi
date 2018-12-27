@@ -76,7 +76,7 @@ namespace AyaxApi.Repository
 
 			if(pageNum < 0 || pageSize < 1)
 			{
-				throw new Exception("Invalid paging params.");
+				throw new AyaxApiException("Invalid pagination params.", null);
 			}
 
 			return objects
@@ -107,7 +107,7 @@ namespace AyaxApi.Repository
 				}
 				else
 				{
-					throw new Exception(string.Format("Object with Id={0} not exist.", newObject.Id));
+					throw new AyaxApiException(string.Format("Object with Id={0} not exist.", newObject.Id), null);
 				}
 			}
 
@@ -131,7 +131,8 @@ namespace AyaxApi.Repository
 			}
 			else
 			{
-				throw new Exception(string.Format("Object with Id={0} not exist.", id));
+				//throw new AyaxApiException(string.Format("Object with Id={0} not exist.", id), null);
+				return null;
 			}
 
 			await _context.SaveChangesAsync();

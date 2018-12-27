@@ -1,0 +1,5 @@
+{
+	"ConnectionStrings": {
+		"DefaultConnection": "Data Source=LAPTOP-R5MJF817;Database=AyaxApiSample;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+	}
+}

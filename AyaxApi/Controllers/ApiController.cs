@@ -63,10 +63,13 @@ namespace AyaxApi.Controllers
 				divisions = await _repository.GetObjectsAsync<Division>(d => 
 													EF.Functions.Like(d.Name, string.Format("%{0}%", patternName)), pageNum, pageSize);
 			}
-			catch (Exception ex)
+			catch (AyaxApiException e)
 			{
-				return BadRequest(ex);
-				//return StatusCode(500, ex);
+				return BadRequest(e);				
+			}
+			catch(Exception ex)
+			{
+				return StatusCode(500, ex);
 			}
 
 			if (divisions.Count == 0)
@@ -90,7 +93,11 @@ namespace AyaxApi.Controllers
 			{
 				await _repository.SaveObjectAsync<Division>(div);
 			}
-			catch(Exception ex)
+			catch (AyaxApiException e)
+			{
+				return BadRequest(e);
+			}
+			catch (Exception ex)
 			{
 				return StatusCode(500, ex);
 			}
@@ -152,9 +159,11 @@ namespace AyaxApi.Controllers
 		}
 
 		/// <summary>
-		/// 
+		/// Возвращает экземпляры сущности "Риэлтор" для заданного подразделения.
 		/// </summary>
-		/// <param name="divId"></param>
+		/// <param name="divId">Идентификатор подразделения</param>
+		/// <param name="pageNum">Номер страницы данных начиная с "0".</param>
+		/// <param name="pageSize">Количество экземпляров на стронице.</param>
 		/// <returns></returns>
 		[HttpGet("realtors_div/divid={divId}")]
 		public async Task<ActionResult<IEnumerable<Realtor>>> GetRealtorsByDivision(long divId, int? pageNum, int? pageSize)
@@ -177,6 +186,13 @@ namespace AyaxApi.Controllers
 			return realtors;
 		}
 
+		/// <summary>
+		/// Возвращает экземпляры сущности "Риэлтор" по шаблону имени (like).
+		/// </summary>
+		/// <param name="patternName">Шаблон имени.</param>
+		/// <param name="pageNum">Номер страницы данных начиная с "0".</param>
+		/// <param name="pageSize">Количество экземпляров на стронице.</param>
+		/// <returns></returns>
 		[HttpGet("realtors_name/name={patternName};page={pageNum};size={pageSize}")]
 		public async Task<ActionResult<IEnumerable<Realtor>>> GetRealtorsByName(string patternName, int? pageNum, int? pageSize)
 		{
